@@ -28,6 +28,7 @@ export class ProductsServices {
     const limit = 100//usaremos 100 porducts
     for (let index = 0; index < limit; index++) {
       this.products.push({
+        id: faker.datatype.uuid(),
         name: faker.commerce.product(),
         price: parseInt(faker.commerce.price(), 10),//numero en base 10 entero
         image: faker.image.imageUrl()
@@ -35,24 +36,49 @@ export class ProductsServices {
     }
   }
 
-  create() {
-
+  create(data) {
+    const newProduct = {
+      //el id ramdom generado x faker
+      id: faker.datatype.uuid(),
+      //los otros datos los genera un client frontend y viene en 'data'
+      ...data//esto me genera un merge de los datos de 'data' con el 'id'
+    }
+    this.products.push(newProduct)//mando el newProduct para el array products
+    return newProduct//para verlo pues, cuando se ejecute el metodo
   }
 
   find() {
     return this.products
   }
 
-  findOne() {
-
+  findOne(id) {
+    const index = this.products.findIndex(item => item.id === id)
+    if (index === -1) {//si no lo encuentra JS retorna -1
+      throw new Error('product not found')
+    }
+    return this.products[index]
   }
 
-  update() {
-
+  update(id, changes) {
+    const index = this.products.findIndex(item => item.id === id)
+    if (index === -1) {//si no lo encuentra JS retorna -1
+      throw new Error('product not found')
+    }
+    const product = this.products[index];
+    this.products[index] = {
+      ...product,
+      ...changes
+    }//mergea los changes en el producto indexado
+    return this.products[index]//muestame el objeto modificado
   }
 
-  delete() {
-
+  delete(id) {
+    const index = this.products.findIndex(item => item.id === id)
+    if (index === -1) {
+      throw new Error('product not found')
+    }
+    this.products.splice(index, 1)// eliminar '1' item a partir de 'index'(osea q se elimine el mismo)
+    return { id }
   }
 
 }

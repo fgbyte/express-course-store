@@ -2,10 +2,11 @@ import express from 'express'
 // import { faker } from '@faker-js/faker'
 
 //importando servicios
-import { ProductsServices } from '../services/product.services';
+import { ProductsServices } from '../services/product.services.js';
 
 export const productsRouter = express.Router();
-//creando instacia del servicio
+
+//* creando instacia de servicios
 const service = new ProductsServices()
 
 //Ahora como estoy en products.router no necesito poner el '/products' sino que solo dejo el '/' y lo que le sigue a 'products"/..."' porque el endpoint ya esta especificado
@@ -14,76 +15,58 @@ const service = new ProductsServices()
 
 
 //* Products Endpoints
-
+//con los servicios incluidos
 //* GET
+//agregados los services
+//service.find()
 productsRouter.get('/', (req, res) => {
-  const products = []
-  const { size } = req.query
-  const limit = size || 10
-
-  for (let index = 0; index < limit; index++) {
-    products.push({
-      name: faker.commerce.product(),
-      price: parseInt(faker.commerce.price(), 10),//numero en base 10 entero
-      image: faker.image.imageUrl()
-    })
-  }
-  //respuesta
+  const products = service.find()
   res.json(products)
 })
 
-
-productsRouter.get('/filter', (req, res) => {
-  res.send('Soy un filter')
-})
-
+//service.findOne()
 productsRouter.get('/:id', (req, res) => {
   const { id } = req.params
-  //poninedo un id en 404
-  if (id === '999') {//-> todos los parametros enviados por GET los recive como 'string'
-    res.status(404).json({
-      message: 'not found'
-    })
-  }else {
-    res.status(200).json({
-      id,
-      name: faker.commerce.product(),
-      price: parseInt(faker.commerce.price(), 10),
-      image: faker.image.imageUrl()
-    })
-  }
+  const product = service.findOne(id)
+  res.json(product)
 })
 
 
 //* POST
+//service.create()
 //los POST deben enviarse por Inomnia o Postman
 productsRouter.post('/', (req, res) => {
   const body = req.body
-  res.status(201).json({
-    message: 'created',
-    data: body
-  })
+  const newProduct = service.create(body)
+  res.status(201).json(newProduct)
+})
+
+//* PUT
+//debemos pasar el id
+//service.update()
+productsRouter.put('/:id', (req, res) => {
+  const { id } = req.params
+  const body = req.body
+  const product = service.update(id, body)
+  res.json(product)
 })
 
 //* PATCH
 //debemos pasar el id
+//service.update()
 productsRouter.patch('/:id', (req, res) => {
   const { id } = req.params
   const body = req.body
-  res.json({
-    message: 'update',
-    data: body,
-    id
-  })
+  const product = service.update(id, body)
+  res.json(product)
 })
 
 //* DELETE
 //debemos pasar el id
 //no necesitamos res del body del object, solo queremos eliminarlo
+//service.delete()
 productsRouter.delete('/:id', (req, res) => {
   const { id } = req.params
-  res.json({
-    message: 'deleted',
-    id
-  })
+  const rsta = service.delete(id)
+  res.json(rsta)
 })
