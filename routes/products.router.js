@@ -1,7 +1,12 @@
 import express from 'express'
-import { faker } from '@faker-js/faker'
+// import { faker } from '@faker-js/faker'
+
+//importando servicios
+import { ProductsServices } from '../services/product.services';
 
 export const productsRouter = express.Router();
+//creando instacia del servicio
+const service = new ProductsServices()
 
 //Ahora como estoy en products.router no necesito poner el '/products' sino que solo dejo el '/' y lo que le sigue a 'products"/..."' porque el endpoint ya esta especificado
 
@@ -9,6 +14,8 @@ export const productsRouter = express.Router();
 
 
 //* Products Endpoints
+
+//* GET
 productsRouter.get('/', (req, res) => {
   const products = []
   const { size } = req.query
@@ -32,10 +39,51 @@ productsRouter.get('/filter', (req, res) => {
 
 productsRouter.get('/:id', (req, res) => {
   const { id } = req.params
+  //poninedo un id en 404
+  if (id === '999') {//-> todos los parametros enviados por GET los recive como 'string'
+    res.status(404).json({
+      message: 'not found'
+    })
+  }else {
+    res.status(200).json({
+      id,
+      name: faker.commerce.product(),
+      price: parseInt(faker.commerce.price(), 10),
+      image: faker.image.imageUrl()
+    })
+  }
+})
+
+
+//* POST
+//los POST deben enviarse por Inomnia o Postman
+productsRouter.post('/', (req, res) => {
+  const body = req.body
+  res.status(201).json({
+    message: 'created',
+    data: body
+  })
+})
+
+//* PATCH
+//debemos pasar el id
+productsRouter.patch('/:id', (req, res) => {
+  const { id } = req.params
+  const body = req.body
   res.json({
-    id,
-    name: faker.commerce.product(),
-    price: parseInt(faker.commerce.price(), 10),
-    image: faker.image.imageUrl()
+    message: 'update',
+    data: body,
+    id
+  })
+})
+
+//* DELETE
+//debemos pasar el id
+//no necesitamos res del body del object, solo queremos eliminarlo
+productsRouter.delete('/:id', (req, res) => {
+  const { id } = req.params
+  res.json({
+    message: 'deleted',
+    id
   })
 })

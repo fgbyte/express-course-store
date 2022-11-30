@@ -9,6 +9,8 @@ export const usersRouter = express.Router();
 
 
 //* Products Endpoints
+
+//* GET
 usersRouter.get('/', (req, res) => {
   const users = []
   const { size } = req.query
@@ -42,5 +44,53 @@ usersRouter.get('/:id', (req, res) => {
     password: faker.internet.password(),
     phone: faker.phone.number(),
     locale: faker.random.locale()
+  })
+})
+
+
+//* POST
+usersRouter.post('/', (req, res) => {
+  //voy a enviarle con insomnia el body de un onjeto y mi endpoint lo va a asimilar y lo va a crear
+  const body = req.body
+  res.json({
+    message: 'created',
+    data: body
+  })
+})
+
+//* PUT
+//actualizar todos los campos
+//necesita ID
+usersRouter.put('/:id', (req, res) => {
+  const { id } = req.params //se pasa como parametro en la navbar
+  const body = req.body//es el puto body
+  res.json({
+    message: 'updated',
+    data: body,
+    id
+  })
+})
+
+//* PATCH
+//actualizar parcialente
+//necesita ID
+usersRouter.patch('/:id', (req, res) => {
+  const { id } = req.params //se pasa como parametro en la navbar
+  const body = req.body//es el puto body
+  res.json({
+    message: 'updated',
+    data: body,
+    id
+  })
+})
+
+//* DELETE
+//elimina un objeto
+//necesita ID
+usersRouter.delete('/:id', (req, res) => {
+  const { id } = req.params
+  res.json({
+    message: 'deleted',
+    id
   })
 })

@@ -13,12 +13,9 @@ app.get('/', (req, res) => {
   res.send('Hola mi server en express');
 })
 
+//Middlerware para recibir info tipo json que nos envien por POST
+app.use(express.json())
 
 //otras rutas en la function routerApi -> esta en routes/index.js
+//!esto se pone al fondo para que no cause interferencias
 routerApi(app)
-
-//* RETO
-//crea nuevos paths para los endpoints y poner 'api' delante
-///api/products
-///api/users
-///api/categories
