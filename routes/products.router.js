@@ -19,54 +19,90 @@ const service = new ProductsServices()
 //* GET
 //agregados los services
 //service.find()
-productsRouter.get('/', (req, res) => {
-  const products = service.find()
-  res.json(products)
+productsRouter.get('/', async (req, res) => {
+  try {
+    const products = await service.find()
+    res.json(products)
+  } catch (err) {
+    res.json({
+      message: err.message
+    })
+  }
 })
 
 //service.findOne()
-productsRouter.get('/:id', (req, res) => {
+productsRouter.get('/:id', async (req, res) => {
   const { id } = req.params
-  const product = service.findOne(id)
-  res.json(product)
+  try {
+    const product = await service.findOne(id)
+    res.json(product)
+  } catch(err) {
+    res.json({
+      message: err.message
+    })
+  }
 })
 
 
 //* POST
 //service.create()
 //los POST deben enviarse por Inomnia o Postman
-productsRouter.post('/', (req, res) => {
-  const body = req.body
-  const newProduct = service.create(body)
-  res.status(201).json(newProduct)
+productsRouter.post('/', async (req, res) => {
+  try {
+    const body = req.body
+    const newProduct = await service.create(body)
+    res.status(201).json(newProduct)
+  } catch (err) {
+    res.json({
+      message: err.message
+    })
+  }
 })
 
 //* PUT
 //debemos pasar el id
 //service.update()
-productsRouter.put('/:id', (req, res) => {
-  const { id } = req.params
-  const body = req.body
-  const product = service.update(id, body)
-  res.json(product)
+productsRouter.put('/:id', async (req, res) => {
+  try {
+    const { id } = req.params
+    const body = req.body
+    const product = await service.update(id, body)
+    res.json(product)
+  } catch (error) {
+    res.status(404).json({
+      message: error.message
+    })
+  }
 })
 
 //* PATCH
 //debemos pasar el id
 //service.update()
-productsRouter.patch('/:id', (req, res) => {
-  const { id } = req.params
-  const body = req.body
-  const product = service.update(id, body)
-  res.json(product)
+productsRouter.patch('/:id', async (req, res) => {
+  try {
+    const { id } = req.params
+    const body = req.body
+    const product = await service.update(id, body)
+    res.json(product)
+  } catch (error) {
+    res.status(404).json({
+      message: error.message
+    })
+  }
 })
 
 //* DELETE
 //debemos pasar el id
 //no necesitamos res del body del object, solo queremos eliminarlo
 //service.delete()
-productsRouter.delete('/:id', (req, res) => {
-  const { id } = req.params
-  const rsta = service.delete(id)
-  res.json(rsta)
+productsRouter.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params
+    const rsta = await service.delete(id)
+    res.json(rsta)
+  } catch(err) {
+    res.status(404).json({
+      message: err.message
+    })
+  }
 })

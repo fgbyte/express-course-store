@@ -24,7 +24,7 @@ export class ProductsServices {
   }
 
   //usaremos Faker para generar productos, para ello creamos un metodo (una funcion) generadora y utilizamos el mismo codigo que genera fakers de products.router
-  generate() {
+  async generate() {
     const limit = 100//usaremos 100 porducts
     for (let index = 0; index < limit; index++) {
       this.products.push({
@@ -36,22 +36,22 @@ export class ProductsServices {
     }
   }
 
-  create(data) {
-    const newProduct = {
-      //el id ramdom generado x faker
-      id: faker.datatype.uuid(),
-      //los otros datos los genera un client frontend y viene en 'data'
-      ...data//esto me genera un merge de los datos de 'data' con el 'id'
-    }
-    this.products.push(newProduct)//mando el newProduct para el array products
-    return newProduct//para verlo pues, cuando se ejecute el metodo
+  async create(data) {
+      const newProduct = {
+        //el id ramdom generado x faker
+        id: faker.datatype.uuid(),
+        //los otros datos los genera un client frontend y viene en 'data'
+        ...data//esto me genera un merge de los datos de 'data' con el 'id'
+      }
+      this.products.push(newProduct)//mando el newProduct para el array products
+      return newProduct//para verlo pues, cuando se ejecute el metodo
   }
 
-  find() {
+  async find() {
     return this.products
   }
 
-  findOne(id) {
+  async findOne(id) {
     const index = this.products.findIndex(item => item.id === id)
     if (index === -1) {//si no lo encuentra JS retorna -1
       throw new Error('product not found')
@@ -59,7 +59,7 @@ export class ProductsServices {
     return this.products[index]
   }
 
-  update(id, changes) {
+  async update(id, changes) {
     const index = this.products.findIndex(item => item.id === id)
     if (index === -1) {//si no lo encuentra JS retorna -1
       throw new Error('product not found')
@@ -72,7 +72,7 @@ export class ProductsServices {
     return this.products[index]//muestame el objeto modificado
   }
 
-  delete(id) {
+  async delete(id) {
     const index = this.products.findIndex(item => item.id === id)
     if (index === -1) {
       throw new Error('product not found')

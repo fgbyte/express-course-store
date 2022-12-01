@@ -7,7 +7,7 @@ export class UsersServices {
     this.generate()
   }
 
-  generate() {
+  async generate() {
     const limit = 50//voy a usar 50 users
     for (let i = 0; i < limit; i++) {
       this.users.push({
@@ -22,7 +22,7 @@ export class UsersServices {
     }
   }
 
-  create(data) {
+  async create(data) {
     //no requiere id, pero si la data
     const newUser = {//nuevo objeto
       id: faker.datatype.uuid(),//crea id fake
@@ -32,11 +32,11 @@ export class UsersServices {
     return newUser//muestramelo pa verlo
   }
 
-  find() {
+  async find() {
     return this.users//muestrame el array users
   }
 
-  findOne(id) {
+  async findOne(id) {
     //buscar si el id esta indexado en users
     const index = this.users.findIndex(item => item.id === id)
     if (index === -1) {//si no lo encuentra JS retorna -1
@@ -45,7 +45,7 @@ export class UsersServices {
     return this.users[index]//si existe muestrame el user
   }
 
-  update(id, changes) {
+  async update(id, changes) {
     //buscar si el id esta indexado
     const index = this.users.findIndex(item => item.id === id)
     if (index === -1) {
@@ -60,7 +60,7 @@ export class UsersServices {
     return this.users[index]
   }
 
-  delete(id) {
+  async delete(id) {
      //buscar si el id esta indexado
      const index = this.users.findIndex(item => item.id === id)
      if (index === -1) {

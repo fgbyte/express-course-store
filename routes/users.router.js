@@ -14,55 +14,85 @@ const service = new UsersServices()
 
 //* GET
 //find()
-usersRouter.get('/', (req, res) => {
-  const users = service.find()
-  res.json(users)
+usersRouter.get('/', async (req, res) => {
+  try {
+    const users = await service.find()
+    res.json(users)
+  } catch(err) {
+    res.status(404).json({
+      message: err.message
+    })
+  }
 })
 
 //findOne()
-usersRouter.get('/:id', (req, res) => {
-  const { id } = req.params
-  const user = service.findOne(id)
-  res.json(user)
+usersRouter.get('/:id', async (req, res) => {
+  try {
+    const { id } = req.params
+    const user = await service.findOne(id)
+    res.json(user)
+  } catch(err) {
+    res.status(404).json({
+      message: err.message
+    })
+  }
 })
-
-//filter
-// usersRouter.get('/filter', (req, res) => {
-//   res.send('Soy un filter')
-// })
-
 
 
 //* POST
 //create()
-usersRouter.post('/', (req, res) => {
-  const body = req.body
-  const newUser = service.create(body)
-  res.status(201).json(newUser)
+usersRouter.post('/', async (req, res) => {
+  try {
+    const body = req.body
+    const newUser = await service.create(body)
+    res.status(201).json(newUser)
+  } catch(err) {
+    res.status(404).json({
+      message: err.message
+    })
+  }
 })
 
 //* PUT
 //update()
-usersRouter.put('/:id', (req, res) => {
-  const { id } = req.params
-  const body = req.body
-  const user = service.update(id, body)
-  res.json(user)
+usersRouter.put('/:id', async (req, res) => {
+  try {
+    const { id } = req.params
+    const body = req.body
+    const user = await service.update(id, body)
+    res.json(user)
+  } catch(err) {
+    res.status(404).json({
+      message: err.message
+    })
+  }
 })
 
 //* PATCH
 //update()
-usersRouter.patch('/:id', (req, res) => {
-  const { id } = req.params //se pasa como parametro en la navbar
-  const body = req.body//es el puto body
-  const user = service.update(id, body)
-  res.json(user)
+usersRouter.patch('/:id', async (req, res) => {
+  try {
+    const { id } = req.params //se pasa como parametro en la navbar
+    const body = req.body//es el puto body
+    const user = await service.update(id, body)
+    res.json(user)
+  } catch(err) {
+    res.status(404).json({
+      message: err.message
+    })
+  }
 })
 
 //* DELETE
 //delete()
-usersRouter.delete('/:id', (req, res) => {
-  const { id } = req.params
-  const respuesta = service.delete(id)
-  res.json(respuesta)
+usersRouter.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params
+    const respuesta = await service.delete(id)
+    res.json(respuesta)
+  } catch(err) {
+    res.status(404).json({
+      message: err.message
+    })
+  }
 })
