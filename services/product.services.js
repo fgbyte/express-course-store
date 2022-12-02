@@ -48,6 +48,7 @@ export class ProductsServices {
   }
 
   async find() {
+    const name = this.getTotal()//err forzado para probar Middleware Error
     return this.products
   }
 

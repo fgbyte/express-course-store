@@ -19,14 +19,12 @@ const service = new ProductsServices()
 //* GET
 //agregados los services
 //service.find()
-productsRouter.get('/', async (req, res) => {
+productsRouter.get('/', async (req, res, next) => {
   try {
     const products = await service.find()
     res.json(products)
   } catch (err) {
-    res.json({
-      message: err.message
-    })
+      next(err)
   }
 })
 
