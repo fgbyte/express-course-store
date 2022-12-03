@@ -1,6 +1,7 @@
 import express from 'express';
 import { routerApi } from './routes/index.js';
 import { logErrors, errorHandler, boomErrorHandler } from './middlewares/error.handler.js'
+import cors from 'cors'
 
 
 //lanzando server
@@ -10,6 +11,23 @@ app.listen(port, () => {
   console.log('Mi port ' + port)
 })
 
+//implementando cors
+const whitelist = [
+  'http://localhost:8080',
+  'http://localhost:9000',
+  'https://juniorpool.vercel.app'
+]
+
+const options = {
+  origin: (origin, callback) => {
+    if (whitelist.includes(origin)) {
+      callback(null, true)
+    } else {
+      callback(new Error('not alowed origin'))
+    }
+  }
+}
+app.use(cors(options))
 
 //root del server
 app.get('/', (req, res) => {
