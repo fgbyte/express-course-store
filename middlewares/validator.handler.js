@@ -15,7 +15,8 @@ export function validatorHandler(schema, property){
     const data = req[property]
     const { error } = schema.validate(data)
     if (error) {
-      next(Boom(badRequest(error)))
+      console.log('joiHandler😼')
+      next(new Boom(badRequest(error)))
     }
     next()
   }

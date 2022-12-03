@@ -2,12 +2,14 @@ import express from 'express';
 import { routerApi } from './routes/index.js';
 import { logErrors, errorHandler, boomErrorHandler } from './middlewares/error.handler.js'
 
+
 //lanzando server
 const app = express();
 const port = 3002;
 app.listen(port, () => {
   console.log('Mi port ' + port)
 })
+
 
 //root del server
 app.get('/', (req, res) => {

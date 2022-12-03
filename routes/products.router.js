@@ -1,12 +1,11 @@
+//importando express para usar los Router
 import express from 'express'
-// import { faker } from '@faker-js/faker'
 
 //importando servicios
 import { ProductsServices } from '../services/product.services.js';
 
-//importando validadores y schemas
+//importando validadores de requests y schemas
 import { validatorHandler } from '../middlewares/validator.handler.js';
-
 import { createProductSchema, updateProductSchema, getProductSchema } from '../schemas/product.schema.js'
 
 
@@ -36,15 +35,17 @@ productsRouter.get('/', async (req, res, next) => {
 })
 
 //service.findOne()
-productsRouter.get('/:id', async (req, res, next) => {
-  const { id } = req.params
-  try {
-    const product = await service.findOne(id)
-    res.json(product)
-  } catch (err) {
-    next(err)
-  }
-})
+productsRouter.get('/:id',
+  validatorHandler(getProductSchema, 'params'),
+  async (req, res, next) => {
+    try {
+      const { id } = req.params//sobre este se va a ejecutar el validator
+      const product = await service.findOne(id)//sobre este se va a ejecutar el service
+      res.json(product)//respuesta del server
+    } catch (err) {
+      next(err)//procesado de errores
+    }
+  })
 
 
 //* POST

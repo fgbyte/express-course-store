@@ -12,12 +12,14 @@
 - borrar -> delete()
 */
 
-//* Implementando Servicios
-//traemos faker
+//imprtando faker
 import { faker } from "@faker-js/faker";
 
+//importando boom para manejo de errores
 import { Boom, conflict, notFound } from "@hapi/boom";
 
+
+//* Implementando Servicios
 export class ProductsServices {
   //tada class necesita un constructor
   constructor() {
