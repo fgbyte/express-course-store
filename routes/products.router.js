@@ -4,6 +4,13 @@ import express from 'express'
 //importando servicios
 import { ProductsServices } from '../services/product.services.js';
 
+//importando validadores y schemas
+import { validatorHandler } from '../middlewares/validator.handler.js';
+
+import { createProductSchema, updateProductSchema, getProductSchema } from '../schemas/product.schema.js'
+
+
+//exportando routers
 export const productsRouter = express.Router();
 
 //* creando instacia de servicios

@@ -16,7 +16,7 @@
 //traemos faker
 import { faker } from "@faker-js/faker";
 
-import { Boom, notFound } from "@hapi/boom";
+import { Boom, conflict, notFound } from "@hapi/boom";
 
 export class ProductsServices {
   //tada class necesita un constructor
@@ -33,7 +33,8 @@ export class ProductsServices {
         id: faker.datatype.uuid(),
         name: faker.commerce.product(),
         price: parseInt(faker.commerce.price(), 10),//numero en base 10 entero
-        image: faker.image.imageUrl()
+        image: faker.image.imageUrl(),
+        isBlock: faker.datatype.boolean()
       })
     }
   }
@@ -56,8 +57,11 @@ export class ProductsServices {
 
   async findOne(id) {
     const product = this.products.find(item => item.id === id)
-    if (!product) {//si no lo encuentra JS retorna -1
-      throw new Boom(notFound('missing'))//asi es como se poner actualmente 😎
+    if (!product) {//si no esta product lanza boom
+      throw new Boom(notFound('missing product'))//asi es como se poner actualmente 😎
+    }
+    if (product.isBlock) {
+      throw new Boom(conflict('product is blocked'))
     }
     return product
   }
