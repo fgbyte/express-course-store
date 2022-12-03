@@ -16,6 +16,8 @@
 //traemos faker
 import { faker } from "@faker-js/faker";
 
+import { Boom, notFound } from "@hapi/boom";
+
 export class ProductsServices {
   //tada class necesita un constructor
   constructor() {
@@ -48,14 +50,14 @@ export class ProductsServices {
   }
 
   async find() {
-    const name = this.getTotal()//err forzado para probar Middleware Error
+    //const name = this.getTotal()//err forzado para probar Middleware Error
     return this.products
   }
 
   async findOne(id) {
     const index = this.products.findIndex(item => item.id === id)
     if (index === -1) {//si no lo encuentra JS retorna -1
-      throw new Error('product not found')
+      throw new Boom(notFound('missing'))//asi es como se poner actualmente 😎
     }
     return this.products[index]
   }

@@ -24,20 +24,18 @@ productsRouter.get('/', async (req, res, next) => {
     const products = await service.find()
     res.json(products)
   } catch (err) {
-      next(err)
+    next(err)
   }
 })
 
 //service.findOne()
-productsRouter.get('/:id', async (req, res) => {
+productsRouter.get('/:id', async (req, res, next) => {
   const { id } = req.params
   try {
     const product = await service.findOne(id)
     res.json(product)
-  } catch(err) {
-    res.json({
-      message: err.message
-    })
+  } catch (err) {
+    next(err)
   }
 })
 
@@ -98,7 +96,7 @@ productsRouter.delete('/:id', async (req, res) => {
     const { id } = req.params
     const rsta = await service.delete(id)
     res.json(rsta)
-  } catch(err) {
+  } catch (err) {
     res.status(404).json({
       message: err.message
     })

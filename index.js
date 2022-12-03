@@ -1,6 +1,6 @@
 import express from 'express';
 import { routerApi } from './routes/index.js';
-import { logErrors, errorHandler } from './middlewares/error.handler.js'
+import { logErrors, errorHandler, boomErrorHandler } from './middlewares/error.handler.js'
 
 //lanzando server
 const app = express();
@@ -24,4 +24,5 @@ routerApi(app)
 //Implementando los Middlewares
 //en el orden que los pongamos va a ser en el que se ejecuten uno tras del otro
 app.use(logErrors)
+app.use(boomErrorHandler)
 app.use(errorHandler)
