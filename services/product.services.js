@@ -55,11 +55,11 @@ export class ProductsServices {
   }
 
   async findOne(id) {
-    const index = this.products.findIndex(item => item.id === id)
-    if (index === -1) {//si no lo encuentra JS retorna -1
+    const product = this.products.find(item => item.id === id)
+    if (!product) {//si no lo encuentra JS retorna -1
       throw new Boom(notFound('missing'))//asi es como se poner actualmente 😎
     }
-    return this.products[index]
+    return product
   }
 
   async update(id, changes) {
