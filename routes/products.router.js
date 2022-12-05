@@ -51,62 +51,58 @@ productsRouter.get('/:id',
 //* POST
 //service.create()
 //los POST deben enviarse por Inomnia o Postman
-productsRouter.post('/', async (req, res) => {
-  try {
-    const body = req.body
-    const newProduct = await service.create(body)
-    res.status(201).json(newProduct)
-  } catch (err) {
-    res.json({
-      message: err.message
-    })
-  }
-})
+productsRouter.post('/',
+  validatorHandler(createProductSchema, 'body'),
+  async (req, res, next) => {
+    try {
+      const body = req.body
+      const newProduct = await service.create(body)
+      res.status(201).json(newProduct)
+    } catch (err) {
+      next(err)
+    }
+  })
 
 //* PUT
 //debemos pasar el id
 //service.update()
-productsRouter.put('/:id', async (req, res) => {
+productsRouter.put('/:id', async (req, res, next) => {
   try {
     const { id } = req.params
     const body = req.body
     const product = await service.update(id, body)
     res.json(product)
   } catch (error) {
-    res.status(404).json({
-      message: error.message
-    })
+    next(err)
   }
 })
 
 //* PATCH
 //debemos pasar el id
 //service.update()
-productsRouter.patch('/:id', async (req, res) => {
-  try {
-    const { id } = req.params
-    const body = req.body
-    const product = await service.update(id, body)
-    res.json(product)
-  } catch (error) {
-    res.status(404).json({
-      message: error.message
-    })
-  }
-})
+productsRouter.patch('/:id',
+  validatorHandler(updateProductSchema, 'params'),
+  async (req, res, next) => {
+    try {
+      const { id } = req.params
+      const body = req.body
+      const product = await service.update(id, body)
+      res.json(product)
+    } catch (error) {
+      next(err)
+    }
+  })
 
 //* DELETE
 //debemos pasar el id
 //no necesitamos res del body del object, solo queremos eliminarlo
 //service.delete()
-productsRouter.delete('/:id', async (req, res) => {
+productsRouter.delete('/:id', async (req, res, next) => {
   try {
     const { id } = req.params
     const rsta = await service.delete(id)
     res.json(rsta)
   } catch (err) {
-    res.status(404).json({
-      message: err.message
-    })
+    next(err)
   }
 })

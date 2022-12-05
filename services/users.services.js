@@ -1,4 +1,5 @@
 import { faker } from "@faker-js/faker";
+import { Boom, notFound } from "@hapi/boom";
 
 export class UsersServices {
 
@@ -38,18 +39,18 @@ export class UsersServices {
 
   async findOne(id) {
     //buscar si el id esta indexado en users
-    const index = this.users.findIndex(item => item.id === id)
-    if (index === -1) {//si no lo encuentra JS retorna -1
-      throw new Error('user not found')
+    const user = this.users.find(item => item.id === id)
+    if (!user) {//si no lo encuentra JS retorna -1
+      throw new Boom(notFound('missing user'))
     }
-    return this.users[index]//si existe muestrame el user
+    return user//si existe muestrame el user
   }
 
   async update(id, changes) {
     //buscar si el id esta indexado
     const index = this.users.findIndex(item => item.id === id)
     if (index === -1) {
-      throw new Error('user not found')
+      throw new Boom(notFound('missing user'))
     }
     //de estarlo agregarle los cambios
     const user = this.users[index];
@@ -64,7 +65,7 @@ export class UsersServices {
      //buscar si el id esta indexado
      const index = this.users.findIndex(item => item.id === id)
      if (index === -1) {
-       throw new Error('user not found')
+       throw new Boom(notFound('missing user'))
      }
      //de estarlo eliminarlo con splice
      this.users.splice(index, 1)

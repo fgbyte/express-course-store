@@ -3,7 +3,6 @@ import express from "express";
 import { productsRouter } from "./products.router.js";
 import { usersRouter } from "./users.router.js";
 
-// import { router } from
 
 export function routerApi(app) {
   //* Generando Rutas por las Versiones de la API *//
